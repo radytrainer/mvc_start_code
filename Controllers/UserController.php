@@ -51,7 +51,8 @@ class UserController extends BaseController
     public function edit($id)
     {
         
-       echo "Edit user with id: $id";
+        $result = $this->users->getUserById($id);
+        $this->view('users/edit', ['user' => $result]);
     }
 
     /**
@@ -59,7 +60,11 @@ class UserController extends BaseController
      */
     public function update($id)
     {
-        echo "Update user with id: $id";
+        $username = $_POST['username'];
+        $password = $_POST['pswd'];
+        $passwordEnypt = password_hash($password, PASSWORD_BCRYPT);
+        $this->users->updateUser($id, $username, $passwordEnypt);
+        $this->redirect('/user');
     }
 
     /**
@@ -67,6 +72,7 @@ class UserController extends BaseController
      */
     public function destroy($id)
     {
-        echo "Delete user with id: $id";
+        $this->users->deleteUser($id);
+        $this->redirect('/user');
     }
 }

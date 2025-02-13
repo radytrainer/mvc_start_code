@@ -14,6 +14,9 @@ $route->get("/", [WelcomeController::class, 'welcome']);
 $route->get("/user", [UserController::class, 'index']);
 $route->get("/user/create", [UserController::class, 'create']);
 $route->post("/user/store", [UserController::class, 'store']);
+$route->delete("/user/delete/{id}", [UserController::class, 'destroy']);
+$route->get("/user/edit/{id}", [UserController::class, 'edit']);
+$route->put("/user/update/{id}", [UserController::class, 'update']);
 
 
 // Categories routes

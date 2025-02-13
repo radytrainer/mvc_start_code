@@ -30,7 +30,7 @@ class UserModel {
      */
     public function getUserById($id)
     {
-        $result = $this->db->query("", []);
+        $result = $this->db->query("SELECT * FROM users WHERE id = :id", [':id' => $id]);
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -64,10 +64,14 @@ class UserModel {
      * @param float $price The price of the product.
      * @param string $description A description of the product.
      */
-    public function updateUser($id, $product_name, $price, $description)
+    public function updateUser($id, $username, $password)
     {
         try {
-            $this->db->query("", []);
+            $this->db->query("UPDATE users SET username = :username, password = :password WHERE id = :id", [
+                ':id' => $id,
+                ':username' => $username,
+                ':password' => $password
+            ]);
         } catch (PDOException $e) {
             echo "Error updating product: " . $e->getMessage();
         }
@@ -81,7 +85,7 @@ class UserModel {
     public function deleteUser($id)
     {
         try {
-            $this->db->query("", []);
+            $this->db->query("DELETE FROM users WHERE id = :id", [':id' => $id]);
         } catch (PDOException $e) {
             echo "Error deleting product: " . $e->getMessage();
         }
