@@ -77,11 +77,16 @@ class Router
     public function route()
     {
         foreach ($this->routes as $uri => $route) {
-            if ($uri === $this->uri && strtoupper($this->method) === $route['method']) {
+            // Convert route pattern to a regex that matches numbers (for IDs)
+            $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([0-9]+)', trim($uri, '/'));
+
+            if (preg_match("#^$pattern$#", trim($this->uri, '/'), $matches)) {
+                array_shift($matches); // Remove full match
                 $controllerClass = $route['action'][0];
                 $function = $route['action'][1];
+
                 $controller = new $controllerClass();
-                $controller->$function();
+                $controller->$function(...$matches); // Pass extracted parameters
                 exit;
             }
         }
